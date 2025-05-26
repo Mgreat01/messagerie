@@ -1,27 +1,34 @@
 const express = require('express');
 const http = require('http');
-const socketIo = require('socket.io');
 const path = require('path');
+const { Server } = require('socket.io');
 
 const app = express();
 const server = http.createServer(app);
-const io = socketIo(server);
+const io = new Server(server);
 
+// Sert les fichiers depuis le dossier "public"
 app.use(express.static(path.join(__dirname, 'public')));
 
-io.on('connection', (socket) => {
-  console.log('Un utilisateur connecté');
+// Route pour la page d'accueil
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
 
-  socket.on('chat message', (msg) => {
-    console.log('Message reçu : ' + msg);
-    io.emit('chat message', msg); // renvoyer à tous les clients
+// Gestion WebSocket
+io.on('connection', socket => {
+  console.log('✅ Un utilisateur est connecté');
+
+  socket.on('chat message', msg => {
+    socket.broadcast.emit('chat message', msg); // Diffuse aux autres
   });
 
   socket.on('disconnect', () => {
-    console.log('Un utilisateur s\'est déconnecté');
+    console.log('❌ Un utilisateur s’est déconnecté');
   });
 });
 
-server.listen(3000, () => {
-  console.log('Serveur en écoute sur http://localhost:3000');
+const PORT = 3000;
+server.listen(PORT, () => {
+  console.log(`🚀 Serveur lancé sur http://localhost:${PORT}`);
 });

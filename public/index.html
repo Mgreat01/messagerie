@@ -1,21 +1,18 @@
-<!-- public/index.html -->
 <!DOCTYPE html>
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
   <title>Mini Chat</title>
   <script src="/socket.io/socket.io.js"></script>
-<script defer src="messagerie.js"></script>
-
+  <script src="messagerie.js" defer></script>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-100 p-4">
-  <div class="max-w-xl mx-auto bg-white p-4 rounded shadow">
-    <h1 class="text-2xl font-bold mb-4">Mini Chat</h1>
-    <ul id="messages" class="mb-4 space-y-2"></ul>
-    <form id="form" class="flex space-x-2">
-      <input id="input" autocomplete="off" class="flex-grow border px-2 py-1 rounded" />
-      <button class="bg-blue-500 text-white px-4 rounded">Envoyer</button>
+<body class="bg-gray-100 h-screen flex items-center justify-center">
+  <div class="w-full max-w-xl p-4 bg-white shadow rounded flex flex-col h-[80vh]">
+    <ul id="messages" class="flex flex-col gap-2 overflow-y-auto mb-4 flex-grow"></ul>
+    <form id="form" class="flex gap-2">
+      <input id="input" autocomplete="off" class="flex-grow border rounded px-4 py-2" placeholder="Écris un message..." />
+      <button class="bg-blue-500 text-white px-4 py-2 rounded">Envoyer</button>
     </form>
   </div>
 </body>
